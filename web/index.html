@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Blockchain Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Local Proof-of-Work Blockchain</h1>
+
+  <section>
+    <h2>Blockchain</h2>
+    <pre id="chain"></pre>
+  </section>
+
+  <section>
+    <h2>Mempool (Pending Transactions)</h2>
+    <pre id="mempool"></pre>
+  </section>
+
+  <section>
+    <h2>Create Transaction</h2>
+    <form id="txForm">
+      <input id="from" placeholder="From address" required />
+      <input id="to" placeholder="To address" required />
+      <input id="amount" type="number" placeholder="Amount" required min="1" />
+      <button type="submit">Send Transaction</button>
+    </form>
+    <p id="txResult"></p>
+  </section>
+
+  <section>
+    <h2>Mine Block</h2>
+    <form id="mineForm">
+      <input id="minerAddress" placeholder="Miner Address" required />
+      <button type="submit">Mine</button>
+    </form>
+    <p id="mineResult"></p>
+  </section>
+
+  <script>
+    async function fetchChain() {
+      const res = await fetch('/api/chain');
+      const data = await res.json();
+      document.getElementById('chain').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function fetchMempool() {
+      const res = await fetch('/api/mempool');
+      const data = await res.json();
+      document.getElementById('mempool').textContent = JSON.stringify(data, null, 2);
+    }
+
+    document.getElementById('txForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const from = document.getElementById('from').value.trim();
+      const to = document.getElementById('to').value.trim();
+      const amount = parseInt(document.getElementById('amount').value);
+      const res = await fetch('/api/transaction', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ from, to, amount }),
+      });
+      const json = await res.json();
+      document.getElementById('txResult').textContent = json.message || json.error;
+      fetchMempool();
+    };
+
+    document.getElementById('mineForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const minerAddress = document.getElementById('minerAddress').value.trim();
+      const res = await fetch('/api/mine', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ minerAddress }),
+      });
+      const json = await res.json();
+      document.getElementById('mineResult').textContent = json.message || json.error;
+      fetchChain();
+      fetchMempool();
+    };
+
+    // Refresh blockchain and mempool every 5 seconds
+    setInterval(() => {
+      fetchChain();
+      fetchMempool();
+    }, 5000);
+
+    fetchChain();
+    fetchMempool();
+  </script>
+</body>
+</html>

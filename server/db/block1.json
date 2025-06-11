@@ -1,0 +1,14 @@
+{
+  "index": 1,
+  "previousHash": "d1102003aa7fbecbde6126ad9922a1c2e6e8cfbf7c8c25adb6034e23559c9597",
+  "timestamp": 1749679566270,
+  "transactions": [
+    {
+      "from": "system",
+      "to": "044225e168e6e70540b6925ac68870034d7a4866153156d1c8949e0d6efe642fb4d082fec38f5742a8bb094c5 be7107e8927bf3a5cdb57648cf7174efeb2d7ec4b",
+      "amount": 50
+    }
+  ],
+  "nonce": 2130,
+  "hash": "00059bcceb68a02e93fa41f02c85a92ff6e33a5893b0ccb698b6c0e70b86bfc5"
+}
