@@ -17,7 +17,7 @@ function generateWallet() {
   fs.writeFileSync(path.join(walletDir, 'public.pem'), publicKey);
   fs.writeFileSync(path.join(walletDir, 'private.pem'), privateKey);
 
-  console.log('✅ Wallet généré avec succès dans le dossier wallet/');
+  console.log('Wallet généré avec succès dans le dossier wallet/');
 }
 
 // Signe une transaction (objet ou stringifié) avec la clé privée
@@ -50,10 +50,10 @@ if (require.main === module) {
   };
 
   const signature = signTransaction(tx, './wallet/private.pem');
-  console.log('\n🔐 Signature:', signature);
+  console.log('\nSignature:', signature);
 
   const isValid = verifyTransaction(tx, signature, './wallet/public.pem');
-  console.log('✅ Signature valide ? ', isValid);
+  console.log('Signature valide ? ', isValid);
 }
 
 // Exports
